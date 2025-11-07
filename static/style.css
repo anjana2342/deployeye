@@ -1,0 +1,261 @@
+body{
+    background: #ffffff;
+}
+
+
+.navbar{
+    box-shadow: 0 1px 4px rgba(0,0,0,00.5);
+}
+
+.main-nav{
+    background: #ffffff;
+    padding: 0.75rem 1rem;
+}
+.nav-bottom{
+    background: #ffffff;
+    padding: 12px 20px;
+    font-weight: 500;
+    font-size: 15px;
+}
+.nav-bottom a{
+    color: #333;
+    text-decoration: none;
+    position: relative;
+    padding: 6px 10px;
+    transition: color 0.2s ease;
+}
+.nav-bottom a:hover,
+.nav-bottom a:active{
+    color: #00bcd4;
+
+
+}
+
+.nav-bottom a::after{
+    content: "";
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    width: 0;
+    height: 2px;
+    background-color: #00bcd4;
+    transition: width  0.2s ease;
+}
+.nav-bottom a:hover::after,
+ .nav-bottom a:active::after{
+    width: 100%;
+ }
+
+
+.nav-btn{
+    position: absolute;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 2rem;
+    background: rgba(255,255,255,0.8);
+    border: none;
+    cursor: pointer;
+    z-index: 1;
+    padding: 0 0.5rem;
+    border-radius: 4px;
+}
+.nav-btn i{
+    font-size: 1.5rem;
+    color: #333;
+}
+
+
+
+.shape-box {
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  padding: 15px 10px;
+  transition: transform 0.2s ease-in-out;
+  height: 180px; 
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+
+
+
+.social-icons {
+  margin-top: 15px;
+}
+
+.social-icons a {
+  color: #fff; /* Icon color */
+ 
+  padding: 10px;
+  margin-right: 10px;
+  border-radius: 50%;
+  display: inline-block;
+  font-size: 16px;
+ 
+  text-decoration: none;
+}
+
+
+.card img {
+  object-fit: cover;
+  height: 200px;
+}
+
+.card input[type="number"] {
+  max-width: 60px;
+}
+
+
+    .cart-section {
+      text-align: center;
+      margin-top: 100px;
+    }
+
+    .cart-section h2 {
+      font-size: 24px;
+      color: #1e1e2f;
+      margin-bottom: 30px;
+    }
+
+    .cart-section button {
+      padding: 12px 28px;
+      font-size: 16px;
+      background-color: #00e6b0;
+      border: none;
+      border-radius: 25px;
+      color: #000;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s ease;
+    }
+
+    .cart-section button:hover {
+      background-color: #00d1a2;
+    }
+
+     .continue-btn {
+    display: inline-block;
+    padding: 10px 20px;
+    background-color: #007bff;
+    color: white;
+    text-decoration: none;
+    border-radius: 4px;
+  }
+
+  .continue-btn:hover {
+    background-color: #0056b3;
+  }
+   #cart-count{
+    font-size: 0.6rem;
+    padding:0.3em 0.5em ;
+    display: none;
+   }
+
+  table {
+    width: 80%;
+    margin: 0 auto;
+    border-collapse: collapse;
+    font-family: Arial, sans-serif;
+  }
+
+  th, td {
+    padding: 10px 15px;
+    border-bottom: 1px solid #ddd;
+    text-align: center;
+  }
+
+  th {
+    background-color: #f4f4f4;
+    font-weight: bold;
+  }
+
+  tr:hover {
+    background-color: #f9f9f9;
+  }
+
+ .cart-section img {
+    width: 50px;
+    vertical-align: middle;
+  }
+
+  .remove-item {
+    background-color: #00e0b7;
+    border: none;
+    padding: 5px 15px;
+    color: white;
+    border-radius: 20px;
+    cursor: pointer;
+  }
+
+  .quantity-input {
+    width: 50px;
+    text-align: center;
+  }
+
+          /* Eyeglasses section */
+        .eyeglasses-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            margin: 30px 0;
+        }
+
+        .eyeglasses-item {
+            width: 300px;
+            margin: 20px;
+            padding: 15px;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+            text-align: center;
+        }
+
+        .eyeglasses-item img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+        }
+
+        .eyeglasses-item h3 {
+            margin-top: 10px;
+            font-size: 1.2em;
+            font-weight: bold;
+            color: #333;
+        }
+
+        .eyeglasses-item p {
+            font-size: 1em;
+            color: #666;
+            margin-top: 10px;
+        }
+
+        .eyeglasses-item .price {
+            font-size: 1.2em;
+            color: #28a745;
+            margin-top: 15px;
+        }
+
+        /* Description styles */
+        .description {
+            text-align: center;
+            margin-top: 30px;
+            font-size: 1.1em;
+            color: #333;
+        }
+
+    
+
+
+
+
+
+
+
+
+     @media (max-width: 768px) {
+      .search-box {
+        margin-top: 10px;
+      }
+    }

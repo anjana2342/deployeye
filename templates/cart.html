@@ -1,0 +1,516 @@
+<!-- {% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart | Eyeconic</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: "Poppins", sans-serif;
+    }
+
+    h2 {
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #222;
+    }
+
+    .cart-container {
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead {
+      background-color: #212529;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .table td, .table th {
+      vertical-align: middle;
+    }
+
+    .product-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-controls button {
+      border: none;
+      background: #dee2e6;
+      padding: 5px 10px;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .quantity-controls button:hover {
+      background-color: #adb5bd;
+    }
+
+    .quantity-controls span {
+      margin: 0 10px;
+      font-weight: 600;
+    }
+
+    .btn-continue {
+      background-color: #6c757d;
+      border: none;
+    }
+
+    .btn-continue:hover {
+      background-color: #5a6268;
+    }
+
+    .btn-checkout {
+      background-color: #198754;
+      border: none;
+    }
+
+    .btn-checkout:hover {
+      background-color: #157347;
+    }
+
+    .btn-buy-now {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-buy-now:hover {
+      background-color: #0b5ed7;
+    }
+
+    .total-summary {
+      text-align: right;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    .modal-content {
+      border-radius: 15px;
+    }
+    .action-buttons {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 8px;
+}
+
+.action-buttons form {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+.action-buttons .btn {
+  width: 110px;
+  font-size: 0.85rem;
+  font-weight: 500;
+}
+
+  </style>
+</head>
+<body>
+
+<div class="container my-5">
+  <h2><i class="fa-solid fa-cart-shopping me-2 text-dark"></i>Your Shopping Cart</h2>
+
+  <div class="cart-container">
+    {% if cart_items %}
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td class="d-flex align-items-center">
+              <img src="{{ item.product.product_image.url }}" alt="{{ item.product.product_name }}" class="product-img">
+              <span class="fw-medium">{{ item.product.product_name }}</span>
+            </td>
+            <td><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.product.product_price }}</td>
+
+             Quantity with increase/decrease buttons 
+            <td class="text-center">
+              <div class="quantity-controls">
+                <form action="{% url 'decrease_quantity' item.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit">−</button>
+                </form>
+                <span>{{ item.quantity }}</span>
+                <form action="{% url 'increase_quantity' item.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit">+</button>
+                </form>
+              </div>
+            </td>
+
+            <td class="fw-semibold text-success">
+              <i class="fa-solid fa-indian-rupee-sign"></i>{{ item.total_price }}
+            </td>
+
+            <td class="text-center">
+              <div class="action-buttons">
+              <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-danger btn-sm">
+                  <i class="fa-solid fa-trash"></i> Remove
+                </button>
+              </form>
+
+               Buy Now button 
+              <form method="POST" action="{% url 'buy_now' item.product.id %}" style="display:inline;">
+                {% csrf_token %}
+                <button type="submit" class="btn btn-buy-now btn-sm mt-2">
+                  <i class="fa-solid fa-bolt"></i> Buy Now
+                </button>
+              </form>
+
+                <form method="POST" action="{% url 'checkout'  %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-dark btn-sm">
+                    <i class="fa-solid fa-cart-plus me-2"></i>Add to Cart
+                    </button>
+                       </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-continue text-white">
+          <i class="fa-solid fa-arrow-left me-2"></i>Continue Shopping
+        </a>
+        <div class="total-summary">
+          Total: <span class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i>{{ total }}</span>
+        
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fa-solid fa-cart-arrow-down fa-3x text-secondary mb-3"></i>
+        <h5 class="text-muted">Your cart is empty!</h5>
+        <a href="{% url 'home' %}" class="btn btn-dark mt-3">Start Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+
+{% if show_modal %}
+<script>
+  const modal = new bootstrap.Modal(document.getElementById('cartModal'));
+  modal.show();
+</script>
+{% endif %}
+
+</body>
+</html> -->
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Your Cart | Eyeconic</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"/>
+
+  <style>
+    body {
+      background-color: #f8f9fa;
+      font-family: "Poppins", sans-serif;
+    }
+
+    h2 {
+      font-weight: 600;
+      text-align: center;
+      margin-bottom: 2rem;
+      color: #222;
+    }
+
+    /* Navbar styling */
+    .navbar {
+      background-color: #212529;
+      padding: 0.8rem 1rem;
+    }
+    .navbar-brand {
+      font-weight: 600;
+      color: #fff !important;
+      font-size: 1.3rem;
+    }
+    .navbar-nav .nav-link {
+      color: #f8f9fa !important;
+      margin-right: 1rem;
+      transition: 0.3s;
+    }
+    .navbar-nav .nav-link:hover {
+      color: #0d6efd !important;
+    }
+    .navbar .btn {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+      padding: 5px 12px;
+      border-radius: 6px;
+    }
+    .navbar .btn:hover {
+      background-color: #0b5ed7;
+    }
+
+    /* Cart section styling */
+    .cart-container {
+      background: #fff;
+      border-radius: 15px;
+      padding: 30px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .table thead {
+      background-color: #212529;
+      color: #fff;
+      text-transform: uppercase;
+      letter-spacing: 0.05rem;
+    }
+
+    .table td, .table th {
+      vertical-align: middle;
+    }
+
+    .product-img {
+      width: 70px;
+      height: 70px;
+      object-fit: cover;
+      border-radius: 8px;
+      margin-right: 10px;
+    }
+
+    .quantity-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .quantity-controls button {
+      border: none;
+      background: #dee2e6;
+      padding: 5px 10px;
+      font-weight: 600;
+      border-radius: 5px;
+      transition: background-color 0.2s;
+    }
+
+    .quantity-controls button:hover {
+      background-color: #adb5bd;
+    }
+
+    .quantity-controls span {
+      margin: 0 10px;
+      font-weight: 600;
+    }
+
+    .btn-continue {
+      background-color: #6c757d;
+      border: none;
+    }
+
+    .btn-continue:hover {
+      background-color: #5a6268;
+    }
+
+    .btn-checkout {
+      background-color: #198754;
+      border: none;
+    }
+
+    .btn-checkout:hover {
+      background-color: #157347;
+    }
+
+    .btn-buy-now {
+      background-color: #0d6efd;
+      color: #fff;
+      border: none;
+    }
+
+    .btn-buy-now:hover {
+      background-color: #0b5ed7;
+    }
+
+    .total-summary {
+      text-align: right;
+      font-weight: 600;
+      font-size: 1.2rem;
+      margin-top: 20px;
+      color: #333;
+    }
+
+    .modal-content {
+      border-radius: 15px;
+    }
+
+    .action-buttons {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .action-buttons .btn {
+      width: 110px;
+      font-size: 0.85rem;
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+
+<!-- 🌐 Navbar Section -->
+<nav class="navbar navbar-expand-lg navbar-dark">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="{% url 'home' %}">
+      <i class="fa-solid fa-eye me-2 text-primary"></i>Eyeconic
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-end" id="navbarNav">
+      <ul class="navbar-nav">
+        <li class="nav-item">
+          <a class="nav-link" href="{% url 'home' %}">Home</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link active" href="{% url 'cart_page' %}">Cart</a>
+        </li>
+        
+       
+      </ul>
+      <a href="{% url 'user_logout' %}" class="btn ms-3">
+        <i class="fa-solid fa-right-from-bracket"></i> Logout
+      </a>
+    </div>
+  </div>
+</nav>
+
+<!-- 🛒 Cart Section -->
+<div class="container my-5">
+  <h2><i class="fa-solid fa-cart-shopping me-2 text-dark"></i>Your Shopping Cart</h2>
+
+  <div class="cart-container">
+    {% if cart_items %}
+      <table class="table table-bordered align-middle">
+        <thead>
+          <tr>
+            <th>Product</th>
+            <th>Price</th>
+            <th>Quantity</th>
+            <th>Total</th>
+            <th>Action</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for item in cart_items %}
+          <tr>
+            <td class="d-flex align-items-center">
+              <img src="{{ item.product.product_image.url }}" alt="{{ item.product.product_name }}" class="product-img">
+              <span class="fw-medium">{{ item.product.product_name }}</span>
+            </td>
+            <td><i class="fa-solid fa-indian-rupee-sign"></i>{{ item.product.product_price }}</td>
+
+            <td class="text-center">
+              <div class="quantity-controls">
+                <form action="{% url 'decrease_quantity' item.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit">−</button>
+                </form>
+                <span>{{ item.quantity }}</span>
+                <form action="{% url 'increase_quantity' item.id %}" method="POST" style="display:inline;">
+                  {% csrf_token %}
+                  <button type="submit">+</button>
+                </form>
+              </div>
+            </td>
+
+            <td class="fw-semibold text-success">
+              <i class="fa-solid fa-indian-rupee-sign"></i>{{ item.total_price }}
+            </td>
+
+            <td class="text-center">
+              <div class="action-buttons">
+                <form method="POST" action="{% url 'remove_from_cart' item.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-danger btn-sm">
+                    <i class="fa-solid fa-trash"></i> Remove
+                  </button>
+                </form>
+
+                <form method="POST" action="{% url 'buy_now' item.product.id %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-buy-now btn-sm mt-2">
+                    <i class="fa-solid fa-bolt"></i> Buy Now
+                  </button>
+                </form>
+
+                    <form method="POST" action="{% url 'checkout'  %}">
+                  {% csrf_token %}
+                  <button type="submit" class="btn btn-dark btn-sm">
+                    <i class="fa-solid fa-cart-plus me-2"></i>Add to Cart
+                    </button>
+                       </form>
+              </div>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <div class="d-flex justify-content-between align-items-center mt-4">
+        <a href="{% url 'home' %}" class="btn btn-continue text-white">
+          <i class="fa-solid fa-arrow-left me-2"></i>Continue Shopping
+        </a>
+        <div class="total-summary">
+          Total: <span class="text-success"><i class="fa-solid fa-indian-rupee-sign"></i>{{ total }}</span>
+        </div>
+      </div>
+    {% else %}
+      <div class="text-center py-5">
+        <i class="fa-solid fa-cart-arrow-down fa-3x text-secondary mb-3"></i>
+        <h5 class="text-muted">Your cart is empty!</h5>
+        <a href="{% url 'home' %}" class="btn btn-dark mt-3">Start Shopping</a>
+      </div>
+    {% endif %}
+  </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+</body>
+</html>

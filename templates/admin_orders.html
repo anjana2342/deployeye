@@ -1,0 +1,353 @@
+<!-- <!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body class="bg-light">
+<div class="container mt-5">
+  <h3 class="mb-4 text-center">All Orders</h3>
+
+  {% if orders %}
+    <div class="table-responsive">
+      <table class="table table-striped table-bordered">
+        <thead class="table-dark">
+          <tr>
+            <th>ID</th>
+            <th>User</th>
+            <th>Product</th>
+            <th>Quantity</th>
+            <th>Total Price</th>
+            <th>Phone</th>
+            <th>Address</th>
+            <th>Status</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for order in orders %}
+            <tr>
+              <td>{{ order.id }}</td>
+              <td>{{ order.user.username }}</td>
+              <td>{{ order.product.product_name }}</td>
+              <td>{{ order.quantity }}</td>
+              <td>₹{{ order.total_price }}</td>
+              <td>{{ order.phone }}</td>
+              <td>{{ order.address }}</td>
+              <td>{{ order.status }}</td>
+            </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  {% else %}
+    <p class="text-center">No orders found.</p>
+  {% endif %}
+</div>
+</body>
+</html> -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Admin Orders</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" rel="stylesheet">
+
+  <style>
+    
+       * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      display: flex;
+    }
+      /* /* justify-content: center;
+      align-items: center; */
+      /* min-height: 100vh; */
+      /* color: #1f2937; */
+    a{
+         color: inherit;
+      text-decoration: none;
+    }
+
+        .sidebar {
+      width: 250px;
+      background: #1f2937;
+      color: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    }
+     .logo {
+      padding: 20px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #00bcd4;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+        .nav-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 0;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-title {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin: 20px 20px 10px;
+      font-weight: 600;
+    }
+
+    .nav-list li {
+      margin: 5px 0;
+    }
+
+    .nav-list a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f1f1f1;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: background 0.3s, color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .nav-list a:hover,
+    .nav-list a.active {
+      background: #00bcd4;
+      color: #fff;
+    }
+
+    .nav-list a i {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .logout {
+      padding: 15px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logout a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .logout a:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+     .main-content {
+      margin-left: 250px;
+      padding: 30px;
+      width: calc(100% - 250px);
+      background: #f4f6fa;
+    }
+
+    .welcome-box {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .welcome-text h1 {
+      color: #1f2937;
+      font-size: 1.8rem;
+      font-weight: 600;
+      text-align: center;
+    }
+    .orders-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 12px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    h3 {
+      color: #1f2937;
+      font-weight: 600;
+    }
+
+    .table thead th {
+      background-color: #1f2937 !important;
+      color: #fff;
+      text-align: center;
+    }
+
+    .table tbody td {
+      vertical-align: middle;
+      text-align: center;
+    }
+
+    .table-hover tbody tr:hover {
+      background-color: #f1f8ff;
+      transition: 0.3s ease;
+    }
+
+    .search-bar {
+      max-width: 350px;
+      margin-left: auto;
+    }
+
+    .status-badge {
+      padding: 6px 10px;
+      border-radius: 20px;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #fff;
+    }
+
+    .status-pending {
+      background-color: #fbbf24; /* Yellow */
+    }
+
+    .status-shipped {
+      background-color: #3b82f6; /* Blue */
+    }
+
+    .status-delivered {
+      background-color: #10b981; /* Green */
+    }
+
+    .status-cancelled {
+      background-color: #ef4444; /* Red */
+    }
+
+    .no-orders {
+      font-size: 1.1rem;
+      color: #6b7280;
+    }
+  </style>
+</head>
+<body>
+
+    <div class="sidebar">
+    <div class="logo">Admin Portal</div>
+
+    <div class="nav-section">
+      <ul class="nav-list">
+        <li><a href="{% url 'admin_dashboard' %}" ><i class="fa-solid fa-house-chimney"></i>Dashboard</a></li>
+        <li><a href="{% url 'add' %}" class="active"><i class="fa-solid fa-plus"></i>Add Product</a></li>
+        <li><a href="{% url 'product_list' %}"><i class="fa-solid fa-list"></i>View Products</a></li>
+      </ul>
+    </div>
+
+    <div class="logout">
+      <a href="{% url 'admin_logout' %}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+    </div>
+  </div>
+           <div class="main-content">
+    <div class="welcome-box">
+      <div class="welcome-text">
+        <h1>all orders</h1>
+      </div>
+    </div>
+
+
+
+  <div class="container mt-5">
+    <div class="orders-container">
+      <div class="d-flex align-items-center mb-4">
+        <h3 class="mb-0"><i class="fa-solid fa-wallet me-2 text-primary"></i></h3>
+        <input type="text" id="searchInput" class="form-control search-bar ms-auto" placeholder="Search orders...">
+      </div>
+
+      {% if orders %}
+        <div class="table-responsive">
+          <table class="table table-hover table-bordered align-middle">
+            <thead>
+              <tr>
+                <th>ID</th>
+                <th>User</th>
+                <th>Product</th>
+                <th>Quantity</th>
+                <th>Total Price</th>
+                <th>Phone</th>
+                <th>Address</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody id="ordersTable">
+              {% for order in orders %}
+                <tr>
+                  <td>{{ order.id }}</td>
+                  <td>{{ order.user.username }}</td>
+                  <td>{{ order.product.product_name }}</td>
+                  <td>{{ order.quantity }}</td>
+                  <td>₹{{ order.total_price }}</td>
+                  <td>{{ order.phone }}</td>
+                  <td>{{ order.address }}</td>
+                  <td>
+                    <!-- {% if order.status == "Pending" %}
+                      <span class="status-badge status-pending">{{ order.status }}</span>
+                    {% elif order.status == "Shipped" %}
+                      <span class="status-badge status-shipped">{{ order.status }}</span>
+                    {% elif order.status == "Delivered" %}
+                      <span class="status-badge status-delivered">{{ order.status }}</span>
+                    {% elif order.status == "Cancelled" %}
+                      <span class="status-badge status-cancelled">{{ order.status }}</span>
+                    {% else %}
+                      <span class="badge bg-secondary">{{ order.status }}</span>
+                    {% endif %} -->
+                    
+                   <form method="POST" action="{% url 'update_order_status' order.id %}">
+                        {% csrf_token %}
+                    <select name="status">
+                <option value="Pending" {% if order.status == "Pending" %}selected{% endif %}>Pending</option>
+                  <option value="Shipped" {% if order.status == "Shipped" %}selected{% endif %}>Shipped</option>
+                 <option value="Delivered" {% if order.status == "Delivered" %}selected{% endif %}>Delivered</option>
+                  <option value="Cancelled" {% if order.status == "Cancelled" %}selected{% endif %}>Cancelled</option>
+                       </select>
+                       <button type="submit">Update</button>
+                          </form>
+                          </td>
+
+                </tr>
+              {% endfor %}
+            </tbody>
+          </table>
+        </div>
+      {% else %}
+        <p class="text-center mt-4 no-orders">No orders found.</p>
+      {% endif %}
+    </div>
+  </div>
+
+  <script>
+   
+    document.getElementById('searchInput').addEventListener('keyup', function() {
+      const searchValue = this.value.toLowerCase();
+      const rows = document.querySelectorAll('#ordersTable tr');
+      rows.forEach(row => {
+        row.style.display = row.innerText.toLowerCase().includes(searchValue) ? '' : 'none';
+      });
+    });
+  </script>
+</body>
+</html>

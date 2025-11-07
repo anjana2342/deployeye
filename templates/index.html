@@ -1,0 +1,785 @@
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>eyeconic</title>
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-LN+7fdVzj6u52u30Kp6M/trliBMCMKTyK833zpbD+pXdCLuTusPj697FH4R/5mcr" crossorigin="anonymous">
+
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css">
+  <link rel="stylesheet" href="{% static 'style.css' %}">
+<style>
+  .card-img-top {
+  height: 260px;
+  object-fit: cover;
+  border-radius: 10px 10px 0 0;
+}
+
+.card {
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 8px 20px rgba(0,0,0,0.15);
+}
+.modal-content {
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+.btn-dark:hover {
+  background-color: #000;
+  color: #fff;
+}
+.modal-content {
+  border-radius: 15px;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+}
+.form-control, textarea {
+  border-radius: 10px;
+}
+.btn-dark {
+  border-radius: 10px;
+}
+  .alert {
+    padding: 10px;
+    border-radius: 6px;
+    margin: 10px 0;
+  }
+  .alert-success { background-color: #d4edda; color: #155724; }
+  .alert-danger { background-color: #f8d7da; color: #721c24; }
+  .alert-info { background-color: #d1ecf1; color: #0c5460; }
+  /* .add-to-wishlist-form button, .btn-outline-danger {
+  border-radius: 50%;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  font-size: 18px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+} */
+
+</style>
+
+</head>
+
+<body>
+  <nav class="main-nav navbar navbar-expand-lg navbar-light shadow-sm w-100">
+    <div class="container-fluid px-4" id="logo">
+      <a class="navbar-brand  d-flex  align-items-center" href="#">
+        <img src="static/images/eyecoinc.png" alt="" width="200px" height="90px">
+
+      </a>
+      <div class="mx-auto my-2 my-lg-0">
+        <form method="GET" action="{% url 'home' %}" class="d-flex mx-auto my-2 my-lg-0">
+        <input type="text" name="q" class="form-control form-control-sm rounded-pill px-4"
+          placeholder="What are you looking for?" value="{{request.GET.q}}">
+          <button type="submit" class="btn btn-dark btn-sm rounded-pill px-3 ms-2"> <i class="fa-solid fa-magnifying-glass"></i>
+          </button>
+          </form>
+      </div>
+
+      <div class="d-flex align-items-center gap-3 mt-2 mt-md-0">
+        {% if request.session.user_id %}
+        <a href="{% url 'user_dashboard' %}" class="text-dark text-decoration-none">
+        <i class="fa-solid fa-chart-line"></i> Dashboard
+      </a>
+           
+          
+      
+
+       
+        
+        <a href="{% url 'wishlist' %}" class="text-dark text-decoration-none"><i class="fa-solid fa-heart"></i> Wishlist</a>
+        <a href="{% url 'user_logout' %}" class="text-dark text-decoration-none"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+        <a href="" class="text-dark text-decoration-none position-relative"><i class="fa-solid fa-cart-shopping"></i> Cart       
+        <span id="cart-count" class="position-absolute top-0 start-100 translate-middle badge rounded-pill bg-danger" >0</span></a>
+        {% else %}
+        <a href="#" data-bs-toggle="modal" data-bs-target="#loginModal" class="text-dark text-decoration-none">
+          <i class="fa-solid fa-user"></i> Login / Register
+        </a>
+         {% endif %}
+      </div>
+    </div>
+  </nav>
+
+  
+   <div class="nav-bottom d-flex flex-wrap justify-content-between align-items-center">
+    <div class="d-flex flex-wrap gap-3">
+      <a href="#" class=" text-decoration-none">EYEGLASSES</a>
+      <a href="#" class="text-decoration-none">SCREEN GLASSES</a>
+      <a href="#" class="text-decoration-none">KIDS GLASSES</a>
+      <a href="#" class="text-decoration-none">CONTACT LENSES</a>
+      <a href="#" class=" text-decoration-none">SUNGLASSES</a>
+    </div>
+   </div>
+
+
+    <div id="carouselExample" class="carousel slide" data-bs-ride="carousel" data-bs-interval="2000">
+  <div class="carousel-inner w-100">
+    <div class="carousel-item active">
+      <img src="	https://static5.lenskart.com/media/uploads/Desktop-v2-topbanner-Cherry_blossom1.jpg" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="	https://static5.lenskart.com/media/uploads/Desktop-v2-topbanner-mavericks.png" class="d-block w-100" alt="...">
+    </div>
+    <div class="carousel-item">
+      <img src="	https://static5.lenskart.com/media/uploads/NEW_AT_LK-Shapes-27772-desktop-banner.png" class="d-block w-100" alt="...">
+    </div>
+     <div class="carousel-item">
+      <img src="https://static5.lenskart.com/media/uploads/NEW_AT_LK-Shapes_27032025rat.png" class="d-block w-100" alt="...">
+    </div>
+
+  </div>
+  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExample" data-bs-slide="prev">
+    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Previous</span>
+  </button>
+  <button class="carousel-control-next" type="button" data-bs-target="#carouselExample" data-bs-slide="next">
+    <span class="carousel-control-next-icon" aria-hidden="true"></span>
+    <span class="visually-hidden">Next</span>
+  </button>
+</div>
+
+<div class="container my-5">
+  <h2 class="text-center  fw-semibold mb-4">shop by gender</h2>
+  <div class="row justify-content-center text-center">
+    <div class="col-12 col-md-4 mb-4">
+      <a href="men.html" class="text-decoration-none text-dark">
+      <img src="https://www.specsmakers.in/cdn/shop/files/men_1.webp?v=1716364811&width=740" alt="Men Eyeglasses" class="img-fluid rounded"></a>
+      <p class="mt-3 fw-bold" >MEN EYEGLASSES</p>
+
+    </div>
+    <div class="col-12 col-md-4 mb-4">
+      <a href="women.html" class="text-decoration-none text-dark">
+      <img src="	https://www.specsmakers.in/cdn/shop/files/womenrg.webp?v=1716364811&width=740" alt="Women Eyeglasses" class="img-fluid rounded"></a>
+      <p class="mt-3 fw-bold">WOMEN EYEGLASSES</p>
+
+    </div>
+    <div class="col-12 col-md-4 mb-4">
+      <a href="kids.html" class=" text-decoration-none text-dark">
+      <img src="https://www.specsmakers.in/cdn/shop/files/kid_1.webp?v=1716364811&width=740" alt="Kids Eyeglasses" class="img-fluid rounded"></a>
+      <p class="mt-3 fw-bold">KIDS EYEGLASSES</p>
+
+    </div>
+
+  </div>
+
+</div>
+<!-- 
+<div class="container my-5">
+  <h2 class="text-center fw-semibold mb-4">FEATURED PRODUCTS</h2>
+  <div class="row row-cols-1 row-cols-md-4 g-4">
+
+    
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="static/images/8004Front_Black.webp" class="card-img-top" alt="Product 1">
+        <div class="card-body text-center">
+          <h5 class="card-title">Classic Aviator</h5>
+          <p class="card-text fw-bold">₹1,999</p>
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <label class="me-2">Qty:</label>
+            <input type="number" min="1" value="1" class="form-control w-25 text-center">
+          </div>
+          <button class="btn btn-dark w-100">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="/static/images/233691620_1200x.webp" class="card-img-top" alt="Product 2">
+        <div class="card-body text-center">
+          <h5 class="card-title">Round Retro</h5>
+          <p class="card-text fw-bold">₹2,499</p>
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <label class="me-2">Qty:</label>
+            <input type="number" min="1" value="1" class="form-control w-25 text-center">
+          </div>
+          <button class="btn btn-dark w-100">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="/static/images/4003270.avif" class="card-img-top" alt="Product 3">
+        <div class="card-body text-center">
+          <h5 class="card-title">Wayfarer Pro</h5>
+          <p class="card-text fw-bold">₹1,799</p>
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <label class="me-2">Qty:</label>
+            <input type="number" min="1" value="1" class="form-control w-25 text-center">
+          </div>
+          <button class="btn btn-dark w-100">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+    
+    <div class="col">
+      <div class="card h-100 shadow-sm">
+        <img src="/static/images/8_247ca865-855f-499c-bc99-a75b53406cad_900x.webp" class="card-img-top" alt="Product 4">
+        <div class="card-body text-center">
+          <h5 class="card-title">Cat Eye Sleek</h5>
+          <p class="card-text fw-bold">₹2,299</p>
+          <div class="d-flex justify-content-center align-items-center mb-2">
+            <label class="me-2">Qty:</label>
+            <input type="number" min="1" value="1" class="form-control w-25 text-center">
+          </div>
+          <button class="btn btn-dark w-100">Add to Cart</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div> -->
+
+<!-- <div class="container my-5">
+  <h2 class="text-center fw-semibold mb-4">ADD TO CART</h2>
+
+  <div class="row row-cols-1 row-cols-md-3  g-4">
+    {% for p in products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm border-0">
+        {% if p.product_image %}
+        <img src="{{ p.product_image.url }}" alt="" class="card-img-top" alt="{{ p.product_name}}">
+        {% else %}
+        <img src="{% static 'images/default.png' %}" alt="" card="card-img-top" alt="no image">
+        {% endif %}
+        <div  class="d-flex justify-content-center align-items-center mb-3">
+          <label class="me-2 fw-medium">Qty:</label>
+<input type="number" min="1" value="1" class="form-control w-25 text-center">
+
+        </div>
+
+        <button class="btn btn-dark w-100 rounded-pill">Add to cart</button>
+
+      </div>
+
+    </div>
+
+
+  </div>
+  {% empty %}
+  <p class="text-center text-muted">No products available right now</p>
+  {% endfor %}
+
+</div>
+</div> -->
+<body>
+  {% if messages %}
+    <div class="messages">
+      {% for message in messages %}
+        {% if message.tags == "error" %}
+          <div class="alert alert-danger">{{ message }}</div>
+        {% elif message.tags == "success" %}
+          <div class="alert alert-success">{{ message }}</div>
+        {% else %}
+          <div class="alert alert-info">{{ message }}</div>
+        {% endif %}
+      {% endfor %}
+    </div>
+  {% endif %}
+
+ 
+
+
+
+<div class="container my-5">
+  <h2 class="text-center fw-semibold mb-4">ADD TO CART</h2>
+  <!-- <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for p in products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm border-0">
+        {% if p.product_image %}
+        <img src="{{ p.product_image.url }}" class="card-img-top" alt="{{ p.product_name }}">
+        {% else %}
+        <img src="{% static 'images/default.jpg' %}" class="card-img-top" alt="No Image">
+        {% endif %}
+
+        <div class="card-body text-center">
+          <h5 class="card-title text-dark fw-semibold">{{ p.product_name }}</h5>
+          <p class="card-text fw-bold text-secondary mb-2"><i class="fa-solid fa-indian-rupee-sign"></i>{{ p.product_price }}</p>
+
+          <div class="d-flex justify-content-center align-items-center mb-3">
+            <label class="me-2 fw-medium">Qty:</label>
+            <input type="number" min="1" value="1" class="form-control w-25 text-center quantity-input">
+          </div>
+
+           <button class="btn btn-dark w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#loginPromptModal" >Add to Cart</button> 
+{% if request.session.user_id %}
+   User is logged in 
+ <form action="{% url 'add_to_cart' p.id %}" method="POST" class="add-to-cart-form">
+      {% csrf_token %}
+      <input type="hidden" name="quantity" class="quantity-field" value="1">
+      <button type="submit" class="btn btn-dark w-100 rounded-pill">Add to Cart</button>
+    </form>
+  {% else %}
+ 
+   User not logged in 
+  <button class="btn btn-dark w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#loginPromptModal">
+    Add to Cart
+  </button>
+{% endif %}
+
+  {% if request.session.user_id %}
+    <form action="{% url 'add_to_wishlist' p.id %}" method="POST" class="add-to-wishlist-form">
+      {% csrf_token %}
+      <button type="submit" class="btn btn-outline-danger btn-sm">
+        <i class="fa-solid fa-heart"></i>
+      </button>
+    </form>
+  {% else %}
+    <button class="btn btn-outline-danger btn-sm" data-bs-toggle="modal" data-bs-target="#loginPromptModal">
+      <i class="fa-solid fa-heart"></i>
+    </button>
+  {% endif %}
+</div>
+
+        </div>
+      </div>
+    </div>
+    {% endfor %}
+  </div>
+</div>
+
+ -->
+
+ <div class="container my-5">
+  <h2 class="text-center fw-semibold mb-4"></h2>
+  <div class="row row-cols-1 row-cols-md-3 g-4">
+    {% for p in products %}
+    <div class="col">
+      <div class="card h-100 shadow-sm border-0 d-flex flex-column">
+        {% if p.product_image %}
+        <img src="{{ p.product_image.url }}" class="card-img-top" alt="{{ p.product_name }}">
+        {% else %}
+        <img src="{% static 'images/default.jpg' %}" class="card-img-top" alt="No Image">
+        {% endif %}
+
+
+    <div class="card-body d-flex flex-column text-center">
+      <h5 class="card-title text-dark fw-semibold">{{ p.product_name }}</h5>
+      <p class="card-text fw-bold text-secondary mb-3"><i class="fa-solid fa-indian-rupee-sign"></i>{{ p.product_price }}</p>
+
+      <div class="d-flex justify-content-center align-items-center mb-3">
+        <label class="me-2 fw-medium">Qty:</label>
+        <input type="number" min="1" value="1" class="form-control w-25 text-center quantity-input">
+      </div>
+
+      <div class="mt-auto d-grid gap-2">
+        {% if request.session.user_id %}
+          <form action="{% url 'add_to_cart' p.id %}" method="POST" class="add-to-cart-form">
+            {% csrf_token %}
+            <input type="hidden" name="quantity" class="quantity-field" value="1">
+            <button type="submit" class="btn btn-dark w-100 rounded-pill">Add to Cart</button>
+          </form>
+
+          <form action="{% url 'add_to_wishlist' p.id %}" method="POST" class="add-to-wishlist-form">
+            {% csrf_token %}
+            <button type="submit" class="btn btn-outline-danger w-100">
+              <i class="fa-solid fa-heart"></i> Wishlist
+            </button>
+          </form>
+        {% else %}
+          <button class="btn btn-dark w-100 rounded-pill" data-bs-toggle="modal" data-bs-target="#loginPromptModal">
+            Add to Cart
+          </button>
+          <button class="btn btn-outline-danger w-100 " data-bs-toggle="modal" data-bs-target="#loginPromptModal">
+            <i class="fa-solid fa-heart"></i> Wishlist
+          </button>
+        {% endif %}
+      </div>
+    </div>
+  </div>
+</div>
+{% endfor %}
+
+
+  </div>
+</div>
+
+
+
+<!-- Login Prompt Modal -->
+<div class="modal fade" id="loginPromptModal" tabindex="-1" aria-labelledby="loginPromptLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content text-center p-4">
+      <h5 class="modal-title mb-3" id="loginPromptLabel">Please Login</h5>
+      <p class="text-muted">You must be logged in to add items to your cart.</p>
+      <div class="mt-3">
+        <button class="btn btn-dark w-100" data-bs-toggle="modal" data-bs-target="#loginModal" data-bs-dismiss="modal">
+          Login Now
+        </button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Login Form Modal -->
+<div class="modal fade" id="loginModal" tabindex="-1" aria-labelledby="loginLabel" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered">
+    <div class="modal-content p-4">
+      <h5 class="modal-title text-center mb-3" id="loginLabel">Login</h5>
+      
+      <form method="POST" action="{% url 'user_login' %}">
+        {% csrf_token %}
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" name="username" placeholder="Enter username" required>
+        </div>
+        
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" class="form-control" id="password" name="password" placeholder="Enter password" required>
+        </div>
+
+        <button type="submit" class="btn btn-dark w-100">Login</button>
+      </form>
+
+      <p class="text-center mt-3">
+        Don’t have an account?
+        <a href="" class="text-decoration-none text-primary" data-bs-toggle="modal" data-bs-target="#registerModal" data-bs-dismiss="modal">Register</a>
+      </p>
+    </div>
+  </div>
+</div>
+
+
+<div class="modal fade" id="registerModal" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content p-4">
+      <h4 class="mb-3 text-center">Register</h4>
+
+      <form method="POST" action="{% url 'user_register' %}">
+        {% csrf_token %}
+
+        <div class="mb-3">
+          <label for="first_name" class="form-label">First Name</label>
+          <input type="text" id="first_name" name="first_name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="last_name" class="form-label">Last Name</label>
+          <input type="text" id="last_name" name="last_name" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" id="register_username" name="username" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="email" class="form-label">Email</label>
+          <input type="email" id="email" name="email" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="address" class="form-label">Address</label>
+          <textarea id="address" name="address" class="form-control" rows="2" required></textarea>
+        </div>
+
+        <div id="gender_group" class="mb-3">
+          <label class="form-label">Gender</label><br>
+          <input type="radio" name="gender" value="Male"> Male
+          <input type="radio" name="gender" value="Female"> Female
+        </div>
+
+        <div class="mb-3">
+          <label for="pincode" class="form-label">Pincode</label>
+          <input type="text" id="pincode" name="pincode" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="city" class="form-label">City</label>
+          <input type="text" id="city" name="city" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="state" class="form-label">State</label>
+          <input type="text" id="state" name="state" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="phone" class="form-label">Phone</label>
+          <input type="text" id="phone" name="phone_number" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="password" class="form-label">Password</label>
+          <input type="password" id="register_password" name="password" class="form-control" required>
+        </div>
+
+        <div class="mb-3">
+          <label for="confirm_password" class="form-label">Confirm Password</label>
+          <input type="password" id="confirm_password" name="confirm_password" class="form-control" required>
+        </div>
+
+        <button type="submit" class="btn btn-primary w-100">Register</button>
+      </form>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+    
+
+
+  </div>
+
+</div>
+
+
+
+
+
+
+
+
+<div class="premium-eyewear-section text-center my-5">
+  <h2 class="section-title fw-semibold">PREMIUM EYEWEAR</h2>
+  <div class="line-divider mx-auto my-3"></div>
+  <img src="/static/images/r1.webp" alt="premium eyewear" class="img-fluid w-100 mt-4">
+</div>
+
+
+
+
+<div class="trending-eyeglasses-section text-center my-5">
+  <h2 class="section-title fw-semibold">TRENDING EYEGLASSES</h2>
+  <div class="line-divider mx-auto my-3"></div>
+  <img src="https://static1.lenskart.com/media/desktop/img/Jan23/desktop/Sun-Banner-web.gif" alt="" class="img-fluid w-100 mt-4">
+</div>
+
+
+<!-- <div class="line-divider mx-auto my-3"></div>
+<img src="	https://static1.lenskart.com/media/desktop/img/Jan23/desktop/desk-10.jpg" alt="shopbyshape" class="img-fluid w-100 mt-4">
+ -->
+
+
+
+
+
+
+
+
+<footer style="background-color: #1a1a1a; color: white; padding: 40px 20px; font-family: Arial, sans-serif;">
+  <div style="max-width: 1200px; margin: auto; display: flex; flex-wrap: wrap; justify-content: space-between; gap: 40px;">
+    
+  
+    <div style="flex: 1 1 300px;">
+      <p>
+        Eyeconic stands as beacon of fashion and functionality. Step into our store and you’re greeted with an array of frames that blend sophistication with contemporary flair.
+      </p>
+      <p style="margin-top: 10px;">
+        At Eyeconic, We don't  just sell eyewear; <br>
+        We offer a vision of clarity and confidence.
+      </p>
+      
+      <div style="margin-top: 20px;"  class="social-icons">
+        <a href="#" style="width: 54px; margin-right: 10px;"></a><i class="fa-brands fa-facebook"></i> </a>
+        <a href="#"style="width: 24px; margin-right: 10px;"><i class="fa-brands fa-instagram"></i></a>
+        <a href="#"style="width: 24px;"><i class="fa-brands fa-whatsapp"></i></a>
+      </div>
+    </div>
+
+
+    <div>
+      <h4>Quick links</h4>
+      <ul style="list-style: none; padding: 0;">
+        <li><a href="#" style="color: white; text-decoration: none;">About us</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Blogs</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Size Guide</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Careers</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Contact us</a></li>
+      </ul>
+    </div>
+
+    
+    <div>
+      <h4>Useful links</h4>
+      <ul style="list-style: none; padding: 0;">
+        <li><a href="#" style="color: white; text-decoration: none;">Track Order</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Return Request</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Store Locator</a></li>
+      </ul>
+    </div>
+
+    <div>
+      <h4>Our Policy</h4>
+      <ul style="list-style: none; padding: 0;">
+        <li><a href="#" style="color: white; text-decoration: none;">Terms of Use</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Privacy Policy</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Warranty Policy</a></li>
+        <li><a href="#" style="color: white; text-decoration: none;">Essilor Warranty Policy</a></li>
+      </ul>
+    </div>
+  </div>
+
+
+  <div style="border-top: 1px solid #444; margin-top: 40px; padding-top: 20px; text-align: center;">
+    <p style="margin: 0;">© 2025 Eyeconic | The Eyewear Expert.</p>
+    <p style="margin: 10px 0 0;">
+      <a href="#" style="color: white; margin-right: 15px;">Terms of Use</a>
+      <a href="#" style="color: white; margin-right: 15px;">Privacy Policy</a>
+      <a href="#" style="color: white; margin-right: 15px;">Warranty Policy</a>
+      <a href="#" style="color: white;">Essilor Warranty Policy</a>
+    </p>
+  </div>
+</footer>
+
+
+
+
+
+
+
+
+
+
+
+
+
+</body>
+<!-- <script src="{% static 'script.js' %}"></script> -->
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.7/dist/js/bootstrap.bundle.min.js"
+  integrity="sha384-ndDqU0Gzau9qJ1lfW4pNLlhNTkCfHzAVBReH9diLvGRem5+R9g2FzA8ZGN954O5Q" crossorigin="anonymous"></script>
+   
+  <script>
+  setTimeout(() => {
+    const alerts = document.querySelectorAll('.alert');
+    alerts.forEach(alert => {
+      const bsAlert = new bootstrap.Alert(alert);
+      bsAlert.close();
+    });
+  } , 6000 );
+
+
+
+document.querySelectorAll('.add-to-cart-form').forEach(form => {
+  form.addEventListener('submit', e => {
+    const quantityInput = form.closest('.card-body').querySelector('.quantity-input');
+    const hiddenField = form.querySelector('.quantity-field');
+    hiddenField.value = quantityInput.value;
+  });
+});
+
+
+
+
+document.addEventListener("DOMContentLoaded", function() {
+  const form = document.querySelector("#registerModal form");
+
+  form.addEventListener("submit", function(event) {
+    event.preventDefault(); // stop default form submission
+    clearErrors(); // remove old error messages
+
+    let isValid = true;
+
+    const fields = {
+      first_name: "First name",
+      last_name: "Last name",
+      register_username: "register_Username",
+      register_password: "register_Password",
+      confirm_password: "Confirm password",
+      email: "Email",
+      address: "Address",
+      gender: "Gender",
+      pincode: "Pincode",
+      city: "City",
+      state: "State",
+      phone: "Phone number"
+    };
+
+    // check required fields
+    for (const [id, label] of Object.entries(fields)) {
+      if (id === "gender") {
+        const gender = document.querySelector("input[name='gender']:checked");
+        if (!gender) {
+          showError("gender_group", `${label} is required.`);
+          isValid = false;
+        }
+      } else {
+        const input = document.getElementById(id);
+        if (!input.value.trim()) {
+          showError(id, `${label} is required.`);
+          isValid = false;
+        }
+      }
+    }
+
+    const password = document.getElementById("register_password").value;
+    const confirmPassword = document.getElementById("confirm_password").value;
+    const email = document.getElementById("email").value.trim();
+    const phone = document.getElementById("phone").value.trim();
+    const pincode = document.getElementById("pincode").value.trim();
+
+    // password match check
+    if (password && confirmPassword && password !== confirmPassword) {
+      showError("confirm_password", "Passwords do not match.");
+      isValid = false;
+    }
+
+    // email validation
+    const emailPattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (email && !emailPattern.test(email)) {
+      showError("email", "Please enter a valid email address.");
+      isValid = false;
+    }
+
+    // phone validation
+    const phonePattern = /^[0-9]{10}$/;
+    if (phone && !phonePattern.test(phone)) {
+      showError("phone", "Please enter a valid 10-digit phone number.");
+      isValid = false;
+    }
+
+    // pincode validation
+    const pincodePattern = /^[0-9]{6}$/;
+    if (pincode && !pincodePattern.test(pincode)) {
+      showError("pincode", "Please enter a valid 6-digit pincode.");
+      isValid = false;
+    }
+
+    if (isValid) {
+      form.submit(); // all good → submit
+    }
+  });
+
+  function showError(id, message) {
+    const input = document.getElementById(id);
+    if (input) {
+      input.classList.add("is-invalid");
+      const error = document.createElement("div");
+      error.className = "invalid-feedback";
+      error.innerText = message;
+      input.parentNode.appendChild(error);
+    } else if (id === "gender_group") {
+      const genderContainer = document.getElementById("gender_group");
+      const error = document.createElement("div");
+      error.className = "text-danger small mt-1";
+      error.innerText = message;
+      genderContainer.appendChild(error);
+    }
+  }
+
+  function clearErrors() {
+    document.querySelectorAll(".is-invalid").forEach(el => el.classList.remove("is-invalid"));
+    document.querySelectorAll(".invalid-feedback, .text-danger").forEach(el => el.remove());
+  }
+});
+
+
+</script>

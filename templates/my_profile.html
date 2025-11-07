@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>My Profile</title>
+    <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+  <style>
+      body {
+      margin: 0;
+      font-family: "Poppins", sans-serif;
+      background-color: #f4f6fa;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    .sidebar {
+      width: 250px;
+      background: #1f2937;
+      color: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      box-shadow: 2px 0 10px rgba(0,0,0,0.2);
+    }
+
+    .logo {
+      padding: 20px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #00bcd4;
+      text-align: center;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+    }
+
+    .nav-section { flex: 1; padding: 20px 0; overflow-y: auto; }
+    .nav-list { list-style: none; padding: 0; margin: 0; }
+    .nav-list a {
+      display: flex; align-items: center; gap: 10px;
+      color: #f1f1f1; padding: 10px 20px; border-radius: 6px;
+      transition: background 0.3s;text-decoration: none;
+    }
+    .nav-list a:hover, .nav-list a.active {
+      background: #00bcd4; color: #fff;
+    }
+
+    .logout { padding: 15px 20px; border-top: 1px solid rgba(255,255,255,0.1); }
+    .logout a { color: #f1f1f1; display: flex; align-items: center; gap: 10px;text-decoration: none; }
+    .logout a:hover { background: #ef4444; border-radius: 6px; color: #fff; }
+
+    .main-content {
+      margin-left: 250px; padding: 30px;
+      width: calc(100% - 250px);
+      background: #f4f6fa;
+    }
+
+    .welcome-box {
+      background: #fff; padding: 20px 30px; border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+      margin-bottom: 30px;
+    }
+    .profile-box {
+      background: white;
+      padding: 30px;
+      border-radius: 10px;
+      max-width: 500px;
+      margin: 0 auto;
+      box-shadow: 0 3px 10px rgba(0,0,0,0.1);
+    }
+    h2 { color: #00bcd4; }
+  </style>
+</head>
+<body>
+    <div class="sidebar">
+    <div class="logo">User Portal</div>
+    <div class="nav-section">
+      <ul class="nav-list">
+        <li><a href="{% url 'user_dashboard' %}" class="active"><i class="fa-solid fa-house-chimney"></i>Dashboard</a></li>
+        <li><a href="{% url 'my_profile' %}"><i class="fa-solid fa-user"></i>My Profile</a></li>
+        <li><a href="{% url 'my_orders' %}"><i class="fa-solid fa-box"></i>My Orders</a></li>
+        <li><a href="{% url 'wishlist' %}"><i class="fa-solid fa-heart"></i>Wishlist</a></li>
+         <li><a href="{% url 'home' %}"> <i class="fa-solid fa-chart-line"></i>Home</a></li>
+      </ul>
+    </div>
+    <div class="logout">
+      <a href="{% url 'user_logout' %}"><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+    </div>
+  </div>
+   <div class="main-content">
+    <div class="welcome-box">
+      <h1>Hey {{ user.first_name }}, Here’s Your Profile</h1>
+
+    
+    </div>
+  <div class="profile-box">
+    <h2>My Profile</h2>
+    <p><strong>First Name:</strong> {{ user.first_name }}</p>
+    <p><strong>Last Name:</strong> {{ user.last_name }}</p>
+    <p><strong>Email:</strong> {{ user.email }}</p>
+    <p><strong>Username:</strong> {{ user.username }}</p>
+  </div>
+</body>
+</html>

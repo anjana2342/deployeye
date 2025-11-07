@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Edit Profile</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+
+  <style>
+    body {
+      font-family: "Poppins", sans-serif;
+      background: #f4f6fa;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+    }
+    .form-container {
+      background: #fff;
+      padding: 30px;
+      border-radius: 10px;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+      width: 400px;
+    }
+    h2 {
+      text-align: center;
+      color: #1f2937;
+      margin-bottom: 20px;
+    }
+  form input {
+  width: 100%;
+  padding: 10px;
+  padding-right: 40px; /* extra space for eye icon on password */
+  margin-bottom: 15px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  box-sizing: border-box;
+}
+
+.password-container {
+  position: relative;
+}
+.password-container input {
+  width: 100%;
+  padding-right: 40px; /* make room for icon */
+}
+.password-container i {
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  cursor: pointer;
+}
+
+    button {
+      width: 100%;
+      padding: 10px;
+      background-color: #00bcd4;
+      color: white;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    button:hover {
+      background-color: #0097a7;
+    }
+  </style>
+</head>
+<body>
+  <div class="form-container">
+    <h2>Edit Profile</h2>
+    <form method="POST">
+      {% csrf_token %}
+      <label>Username:</label>
+      <input type="text" name="username" value="{{ user.username }}" required>
+
+      <label>New Password:</label>
+<div style="position: relative;">
+  <input type="password" id="password" name="password" placeholder="Enter new password " style="width: 100%; padding-right: 40px;">
+  <i id="togglePassword" class="fa-solid fa-eye" style="position: absolute; right: 10px; top: 50%; transform: translateY(-50%); cursor: pointer;"></i>
+</div>
+      <button type="submit">Update</button>
+    </form>
+  </div>
+</body>
+</html>
+<script>
+
+     const togglePassword = document.querySelector('#togglePassword');
+  const password = document.querySelector('#password');
+
+  togglePassword.addEventListener('click', function () {
+    const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+    password.setAttribute('type', type);
+
+    // Toggle icon class
+    this.classList.toggle('fa-eye');
+    this.classList.toggle('fa-eye-slash');
+  });
+  
+</script>

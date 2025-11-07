@@ -1,0 +1,383 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Admin Dashboard</title>
+  <link
+    rel="stylesheet"
+    href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.7.2/css/all.min.css"
+  />
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: "Poppins", sans-serif;
+    }
+
+    body {
+      background-color: #f4f6fa;
+      display: flex;
+      min-height: 100vh;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: none;
+    }
+
+    /* ---------- Sidebar ---------- */
+    .sidebar {
+      width: 250px;
+      background: #1f2937;
+      color: #f1f1f1;
+      display: flex;
+      flex-direction: column;
+      position: fixed;
+      height: 100vh;
+      box-shadow: 2px 0 10px rgba(0, 0, 0, 0.2);
+    }
+
+    .logo {
+      padding: 20px;
+      font-size: 1.4rem;
+      font-weight: 600;
+      color: #00bcd4;
+      text-align: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .nav-section {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px 0;
+    }
+
+    .nav-list {
+      list-style: none;
+      padding: 0;
+      margin: 0;
+    }
+
+    .nav-title {
+      text-transform: uppercase;
+      font-size: 0.8rem;
+      color: #9ca3af;
+      margin: 20px 20px 10px;
+      font-weight: 600;
+    }
+
+    .nav-list li {
+      margin: 5px 0;
+    }
+
+    .nav-list a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f1f1f1;
+      padding: 10px 20px;
+      border-radius: 6px;
+      transition: background 0.3s, color 0.3s;
+      font-size: 0.95rem;
+    }
+
+    .nav-list a:hover,
+    .nav-list a.active {
+      background: #00bcd4;
+      color: #fff;
+    }
+
+    .nav-list a i {
+      font-size: 1.1rem;
+      width: 20px;
+      text-align: center;
+    }
+
+    .logout {
+      padding: 15px 20px;
+      border-top: 1px solid rgba(255, 255, 255, 0.1);
+    }
+
+    .logout a {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      color: #f1f1f1;
+      padding: 10px;
+      border-radius: 6px;
+      transition: background 0.3s;
+    }
+
+    .logout a:hover {
+      background: #ef4444;
+      color: #fff;
+    }
+
+    /* ---------- Main Content ---------- */
+    .main-content {
+      margin-left: 250px;
+      padding: 30px;
+      width: calc(100% - 250px);
+      background: #f4f6fa;
+    }
+
+    .welcome-box {
+      background: #fff;
+      padding: 20px 30px;
+      border-radius: 10px;
+      box-shadow: 0 3px 10px rgba(0, 0, 0, 0.1);
+      margin-bottom: 30px;
+    }
+
+    .welcome-text h1 {
+      color: #1f2937;
+      font-size: 1.8rem;
+      font-weight: 600;
+    }
+    .dashboard-grid {
+  display: grid;
+  grid-template-columns: repeat(2,1fr);
+  gap: 25px;
+  justify-content: center;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 20px 0;
+}
+
+.card {
+  background: #fff;
+  height: 200px;
+  width: 450px;
+  padding: 25px;
+ border-radius: 12px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 15px;
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.08);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+  cursor: pointer;
+}
+
+.card:hover {
+  transform: translateY(-5px);
+  box-shadow: 0 5px 15px rgba(0, 0, 0, 0.15);
+}
+
+.card-icon {
+  font-size: 2rem;
+  color: #00bcd4;
+  background: rgba(0, 188, 212, 0.1);
+  padding: 15px;
+  border-radius: 50%;
+}
+
+.card-info h3 {
+  font-size: 1.1rem;
+  color: #1f2937;
+  font-weight: 600;
+}
+
+.card-info p {
+  font-size: 0.9rem;
+  color: #6b7280;
+}
+.badge {
+  display: inline-block;
+  background: #00bcd4;
+  color: #fff;
+  font-size: 0.8rem;
+  padding: 4px 10px;
+  border-radius: 20px;
+  font-weight: 500;
+  margin-top: 4px;
+}
+
+  @media (max-width: 992px) {
+      .sidebar {
+        width: 220px;
+      }
+
+      .main-content {
+        margin-left: 220px;
+        width: calc(100% - 220px);
+      }
+    }
+
+    @media (max-width: 768px) {
+      body {
+        flex-direction: column;
+      }
+
+      .sidebar {
+        width: 100%;
+        height: auto;
+        position: relative;
+      }
+
+      .main-content {
+        margin-left: 0;
+        width: 100%;
+        padding: 20px;
+      }
+
+      .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 20px;
+      }
+
+      .welcome-text h1 {
+        font-size: 1.5rem;
+      }
+    }
+
+    @media (max-width: 576px) {
+      .dashboard-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .welcome-text h1 {
+        font-size: 1.3rem;
+      }
+
+      .card {
+        padding: 20px;
+      }
+
+      .card-icon {
+        font-size: 1.5rem;
+      }
+
+      .card-info h3 {
+        font-size: 1rem;
+      }
+
+      .badge {
+        font-size: 0.75rem;
+      }
+    }
+
+
+  </style>
+</head>
+<body>
+  <div class="sidebar">
+    <div class="logo">Admin Portal</div>
+
+    <div class="nav-section">
+      <div class="nav-title"></div>
+      <ul class="nav-list">
+        <li><a href="{% url 'admin_dashboard' %}" class="active"><i class="fa-solid fa-house-chimney"></i>Dashboard</a></li>
+      </ul>
+
+      <div class="nav-title"></div>
+      <ul class="nav-list">
+        <li><a href="{% url 'add' %}"><i class="fa-solid fa-plus"></i>Add Product</a></li>
+        <li><a href="{% url 'product_list' %}"><i class="fa-solid fa-list"></i>View Products</a></li>
+       
+     
+        <li><a href="{% url 'edit_profile' %}"><i class="fa-solid fa-user-gear"></i>Edit Profile</a></li>
+
+      </ul>
+
+      <div class="nav-title"></div>
+      <ul class="nav-list">
+        <!-- <li><a href="#"><i class="fa-solid fa-chart-bar"></i></a></li>
+        <li><a href="#"><i class="fa-solid fa-table"></i></a></li> -->
+      </ul>
+    </div>
+
+    <div class="logout">
+      <a href="{% url 'admin_logout' %}" ><i class="fa-solid fa-right-from-bracket"></i>Logout</a>
+    </div>
+  </div>
+
+
+
+
+  <div class="main-content">
+    <div class="welcome-box">
+      <div class="welcome-text">
+        <h1>Welcome {{admin_name}}</h1>
+      </div>
+    </div>
+  
+  
+<a href="{% url 'admin_users' %}" style="text-decoration: none; color: inherit;">
+<div class="dashboard-grid">
+  <div class="card">
+    <i class="fa-solid fa-clipboard-user card-icon"></i>
+    <div class="card-info">
+      <h3>User Management</h3>
+    <span class="badge">{{ user_count }} Users</span>
+
+      <p>View and manage user accounts</p>
+
+    </div>
+
+  </div>
+</a>
+
+
+  <a href="{% url 'admin_orders' %}" style="text-decoration: none; color: inherit;">
+  <div class="card">
+  <i class="fa-solid fa-wallet card-icon"></i>
+   <div class="card-info">
+    <h3>Order Deatails</h3>
+    <span class="badge">{{order_count}}orders</span>
+    <p>Track and mange orders</p>
+    </div>
+
+    </div>
+  </a>
+
+<!-- 
+ <a href=""> 
+ <div class="card">
+  <i class="fa-solid fa-box card-icon"></i>
+  <div class="card-info">
+    <h3>Product Management</h3>
+    <p>
+      Add,Edit,Delete Products
+    </p>
+
+  </div>
+
+</div>
+ </a> -->
+
+<a href="{% url 'admin_reports' %}">
+<div class="card">
+  <i class="fa-solid fa-chart-line card-icon"></i>
+  <div class="card-info">
+    <h3>Reports and analytics</h3>
+    <p>view performance and sales data</p>
+
+  </div>
+
+
+</div> 
+
+</a>
+
+
+
+
+
+
+
+</div>
+  </div>
+
+
+ <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
+<script>
+
+</script>
+</body>
+</html>
